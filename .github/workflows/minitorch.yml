@@ -1,0 +1,31 @@
+name: Python package
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - name: Install dependencies
+      run: |
+        sudo apt-get install graphviz
+        python -m pip install --upgrade pip
+        pip install pytest
+        pip install -r requirements.txt -r requirements.extra.txt
+        pip install -e .
+    - name: Test with pytest
+      run: |
+        echo "Module 0"
+        pytest tests -x -m task0_1
+        pytest tests -x -m task0_2
+        pytest tests -x -m task0_3
+        pytest tests -x -m task0_4
+        echo "Module 1"
+        pytest tests -x -m task1_1
+        pytest tests -x -m task1_2
+        pytest tests -x -m task1_3
+        pytest tests -x -m task1_4
